@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnehundredmillionE of Strangergive</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body, html {
+            margin: 0; padding: 0;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        .page {
+            min-height: 100vh;
+            transition: opacity 1s ease-in-out;
+        }
+        #home-page {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; 
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://i.ibb.co/DfQg2X35/633770718-2147307009356958-4086388506464209583-n-1.png') no-repeat center center;
+            background-size: cover;
+        }
+        .main-title {
+            font-size: clamp(30px, 8vw, 60px); letter-spacing: 12px;
+            margin-bottom: 60px; text-shadow: 0 0 30px rgba(255, 255, 255, 0.2); text-transform: uppercase;
+            font-weight: 900;
+        }
+        .button-container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+        .btn-main {
+            text-decoration: none; color: white; border: 1px solid #333;
+            padding: 18px 45px; border-radius: 4px; font-size: 14px;
+            transition: 0.4s; background: rgba(255,255,255,0.03); backdrop-filter: blur(5px); cursor: pointer;
+            text-transform: uppercase; min-width: 280px; letter-spacing: 2px;
+        }
+        .btn-main:hover { background: #fff; color: #000; border-color: #fff; transform: translateY(-3px); }
+
+        #member-page { display: none; opacity: 0; padding: 60px 10%; background: #050505; }
+        
+        .header-member {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 40px; border-bottom: 1px solid #222; padding-bottom: 20px;
+        }
+
+        .divider-ymd {
+            background-color: #111; color: #fff; padding: 12px 20px;
+            font-size: 18px; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 3px; margin: 20px 0; border-left: 4px solid #fff;
+            width: 100%; box-sizing: border-box; display: block;
+        }
+
+        .section-image {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #222;
+        }
+        .section-image img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        #team-display { color: #888; font-weight: 400; font-size: 16px; letter-spacing: 2px; margin-top: 5px; text-transform: uppercase; }
+        .member-grid { display: flex; flex-direction: column; gap: 12px; max-width: 800px; margin: 0 auto; }
+        
+        .member-card {
+            background: #0a0a0a; border-radius: 8px; padding: 15px 25px;
+            display: flex; align-items: center; gap: 20px;
+            border: 1px solid #1a1a1a; transition: 0.3s; width: 100%; box-sizing: border-box;
+        }
+        .member-card:hover { border-color: #444; background: #0f0f0f; transform: scale(1.01); }
+        
+        .profile-img {
+            width: 55px; height: 55px; background: #111; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; border: 1px solid #222;
+            overflow: hidden; flex-shrink: 0;
+        }
+        .profile-img img { width: 100%; height: 100%; object-fit: cover; }
+
+        .info { flex-grow: 1; }
+        .info h3 { margin: 0; font-size: 18px; font-weight: 500; letter-spacing: 0.5px; }
+        .role { font-size: 11px; margin-top: 4px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #555; }
+        
+        .fb-button { color: #555; text-decoration: none; font-size: 18px; transition: 0.3s; }
+        .fb-button:hover { color: #1877F2; }
+        .back-link { color: #444; text-decoration: none; cursor: pointer; font-size: 12px; letter-spacing: 1px; }
+        .back-link:hover { color: #fff; }
+
+        #music-status {
+            position: fixed; bottom: 20px; right: 20px; font-size: 10px;
+            color: #333; letter-spacing: 1px; text-transform: uppercase;
+            pointer-events: none; z-index: 999;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="ใส่ลิงก์เพลงตรงนี้.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="music-status">[ Press SPACEBAR to Music ]</div>
+
+    <div id="home-page" class="page">
+        <h1 class="main-title">OnehundredmillionE of Strangergive </h1>
+        <div class="button-container">
+            <button class="btn-main" onclick="filterMembers('Onehundredmillion')">Onehundredmillion</button>
+            <button class="btn-main" onclick="filterMembers('Strangergive')">Strangergive</button>
+        </div>
+    </div>
+
+    <div id="member-page" class="page">
+        <div class="header-member">
+            <div>
+                <h1 style="margin:0; font-size: 24px; font-weight: 800; text-transform: uppercase;">Directory</h1>
+                <p id="team-display"></p>
+            </div>
+            <a class="back-link" onclick="goBack()">[ BACK TO MAIN ]</a>
+        </div>
+        <div class="member-grid" id="member-container"></div>
+    </div>
+
+    <script>
+        const music = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                event.preventDefault();
+                if (isPlaying) { music.pause(); isPlaying = false; } 
+                else { music.play(); isPlaying = true; }
+            }
+        });
+
+        const dividerImg = "https://i.ibb.co/DfQg2X35/633770718-2147307009356958-4086388506464209583-n-1.png";
+
+        const allMembers = [
+            { name: "Smit Verdra", roleText: "CEO", team: "Onehundredmillion", fb: "https://www.facebook.com/smit.verdra", img: "" },
+            { name: "ซียู สเตนเกอร์กิฟ", roleText: "CEO", team: "Onehundredmillion", fb: "https://www.facebook.com/seeyou.onehundredmillion", img: "" },
+            { name: "NongHades LovenongmooKonprodtaolok", roleText: "Suppor", team: "Onehundredmillion", fb: "https://www.facebook.com/Hadesdiamondonsnow", img: "" },
+            { name: "Pato Diamondonsnow", roleText: "Suppor", team: "Onehundredmillion", fb: "https://www.facebook.com/patowtf.ig#", img: "" },
+            { name: "Mos Trustboy", roleText: "Suppor", team: "Onehundredmillion", fb: "https://www.facebook.com/RealexeZ#", img: "" },
+            { name: "Chanom Triples", roleText: "Suppor", team: "Onehundredmillion", fb: "https://www.facebook.com/chanom.daenys#", img: "" },
+            { name: "Vendel Strangergive", roleText: "Suppor", team: "Onehundredmillion", fb: "https://www.facebook.com/sogood.wtfsmit/", img: "" },
+            
+            { name: "Nongjayga ィ ۦ", roleText: "CEO", team: "Strangergive", fb: "https://www.facebook.com/melvin.i.253339", img: "" },
+            { name: "Vendel Strangergive", roleText: "CEO", team: "Strangergive", fb: "https://www.facebook.com/sogood.wtfsmit/", img: "" },
+            { name: "Smit Verdra", roleText: "CEO", team: "Strangergive", fb: "https://www.facebook.com/smit.verdra", img: "" },
+            { name: "Zentier Zidmonsnow", roleText: "CEO", team: "Strangergive", fb: "https://www.facebook.com/zentier.diffstyle", img: "" },
+            { name: "ซียู สเตนเกอร์กิฟ", roleText: "CEO", team: "Strangergive", fb: "https://www.facebook.com/seeyou.onehundredmillion#", img: "" },
+            { name: "Arxley Oreomkf", roleText: "ฺ Suppor", team: "Strangergive", fb: "https://www.facebook.com/sinvir.diamondonsnow", img: "" },
+            { name: "Öné Sabudbob", roleText: "ฺ Suppor", team: "Strangergive", fb: "http://facebook.com/ONESABUDBOB", img: "" },
+            { name: "น้องเเชมป์ สเต็ปดียัง", roleText: "ฺ Suppor", team: "Strangergive", fb: "https://www.facebook.com/champrain.12", img: "" },
+            { name: "Nesta Compass", roleText: "ฺ Suppor", team: "Strangergive", fb: "https://www.facebook.com/nesta.compass", img: "" },
+            { name: "Mos Trustboy", roleText: "ฺ Suppor", team: "Strangergive", fb: "https://www.facebook.com/RealexeZ", img: "" },
+            { name: "Kritchayon Thanito", roleText: "ฺ Suppor", team: "Strangergive", fb: "https://www.facebook.com/jett.diff.806072", img: "" },
+            { name: "Fear Lamires", roleText: "ฺ Suppor", team: "Strangergive", fb: "https://www.facebook.com/fearlamires", img: "" },
+            { name: "Amgod Youngthep", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/profile.php?id=61570083825145", img: "" },
+            { name: "Awake FivedoubleOne", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/profile.php?id=61578724435238", img: "" },
+            { name: "Dutchy Xisheng", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/mesa.obaree#", img: "" },
+            { name: "Genic Schutzstaff", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/profile.php?id=61582513900512#", img: "" },
+            { name: "Keira Sabudbob", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/KeiraSabudbob#", img: "" },
+            { name: "Kent Hunter", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/profile.php?id=100093951347589#", img: "" },
+            { name: "Khemakorn Aeksuwan", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/kamakorn.13#", img: "" },
+            { name: "Leon Godmyhxnd", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/leon.godmyhxnd#", img: "" },
+            { name: "MaCas Starbet", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/Macas.Vegas#", img: "" },
+            { name: "Martin Strangergive", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/profile.php?id=61571140194731#", img: "" },
+            { name: "NongKluay G. Yamardang", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/DreamFF999#", img: "" },
+            { name: "Organ Strangergive", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/anna.strangergive#", img: "" },
+            { name: "Punnaphop Yusapson", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/punnaphop.yusapson.2024#", img: "" },
+            { name: "Rescue Saidara", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/RescueSakamoto#", img: "" },
+            { name: "Richard Strangergive", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/richard.time.454734#", img: "" },
+            { name: "Rio Noaimbot", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/rio.strangergive#", img: "" },
+            { name: "Saga Highflexstyle", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/saga.ozen#", img: "" },
+            { name: "Seeyou Onehundredmillion", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/profile.php?id=61567516295199#", img: "" },
+            { name: "Surattanachai Knight", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/surattanachai.knight#", img: "" },
+            { name: "Zenryu Firstclasswinterfelldelta", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/nonggonggangkub#", img: "" },
+            { name: "แพนด้า วินเทอร์เฟล", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/patrick.beta.2025#", img: "" },
+            { name: "ไอติม ซิกไนน์", roleText: "สมาชิก", team: "Strangergive", fb: "https://www.facebook.com/xi.tim.xi.tim.25905#", img: "" }
+        ];
+
+        function filterMembers(teamName) {
+            const container = document.getElementById('member-container');
+            const teamDisplay = document.getElementById('team-display');
+            container.innerHTML = "";
+            teamDisplay.innerText = "// " + teamName;
+
+            const filtered = allMembers.filter(m => m.team === teamName);
+
+            filtered.forEach((m, index) => {
+                // 1. ใส่รูปหัวบนสุด
+                if (index === 0) {
+                    container.innerHTML += `<div class="section-image"><img src="${dividerImg}"></div>`;
+                }
+
+                const profileImg = m.img ? `<img src="${m.img}" alt="profile">` : `<i class="fas fa-user"></i>`;
+
+                const card = `
+                    <div class="member-card">
+                        <div class="profile-img">${profileImg}</div>
+                        <div class="info">
+                            <h3>${m.name}</h3>
+                            <div class="role">${m.roleText}</div>
+                        </div>
+                        <a href="${m.fb}" target="_blank" class="fb-button">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </div>
+                `;
+                container.innerHTML += card;
+
+                // --- ส่วนแก้ไข: แสดง BY SUPPORT ให้ทั้ง 2 ทีม ---
+                if (m.name === "ซียู สเตนเกอร์กิฟ") {
+                    container.innerHTML += `<div class="divider-ymd">BY SUPPORT</div>`;
+                }
+
+                // ตัวคั่นสำหรับ "สมาชิก"
+                if (m.name === "Fear Lamires") {
+                    container.innerHTML += `<div class="divider-ymd">สมาชิก</div>`;
+                }
+
+                // 2. รูปปิดท้าย
+                if (index === filtered.length - 1) {
+                    container.innerHTML += `<div class="section-image"><img src="${dividerImg}"></div>`;
+                }
+            });
+
+            document.getElementById('home-page').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('home-page').style.display = 'none';
+                document.getElementById('member-page').style.display = 'block';
+                setTimeout(() => { document.getElementById('member-page').style.opacity = '1'; }, 50);
+            }, 800);
+        }
+
+        function goBack() {
+            document.getElementById('member-page').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('member-page').style.display = 'none';
+                document.getElementById('home-page').style.display = 'flex';
+                setTimeout(() => { document.getElementById('home-page').style.opacity = '1'; }, 50);
+            }, 800);
+        }
+    </script>
+</body>
+</html>
